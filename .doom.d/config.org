@@ -1,0 +1,481 @@
+#+TITLE: Marcos' emacs config
+* init.el
+This file controls what Doom modules are enabled and what order they load
+in. Remember to run 'doom sync' after modifying it!
+
+NOTE Press 'SPC h d h' (or 'C-h d h' for non-vim users) to access Doom's
+     documentation. There you'll find a "Module Index" link where you'll find
+     a comprehensive list of Doom's modules and what flags they support.
+
+NOTE Move your cursor over a module's name (or its flags) and press 'K' (or
+     'C-c c k' for non-vim users) to view its documentation. This works on
+     flags as well (those symbols that start with a plus).
+
+     Alternatively, press 'gd' (or 'C-c c d') on a module to browse its
+     directory (for easy access to its source code).
+
+** Lexical binding.
+
+Elisp by default has dynamic-scope, which is fine if a little weird. However,
+dynamic scope comes with a performence penalty. Optional lexical scope has to be
+activated with a file parameter, as such:
+
+#+begin_src elisp :tangle init.el
+;;; init.el -*- lexical-binding: t; -*-
+#+end_src
+
+** doom!
+The ~doom!~ macro controls which modules are loaded into doom emacs. Modules are
+package configurations made by the community. In the spirit of emacs, all the
+configuration that comes with a particular module can be extended or even completly
+overwritten by your private config.
+
+Modules are completely open for discovery.Press 'SPC h d h' (or 'C-h d h' for
+non-vim users) to access Doom's documentation. There you'll find a "Module
+Index" link where you'll find a comprehensive list of Doom's modules and what
+flags they support.
+
+Alternatively, press 'gd' (or 'C-c c d') on a module to browse its directory
+(for easy access to its source code).
+
+#+BEGIN_SRC elisp :tangle init.el
+(doom! :input
+       ;;chinese
+       ;;japanese
+       ;; layout            ; auie,ctsrnm is the superior home row
+
+       :completion
+       company           ; the ultimate code completion backend
+       ;;helm              ; the *other* search engine for love and life
+       ;;ido               ; the other *other* search engine...
+       (ivy +icons)               ; a search engine for love and life
+
+       :ui
+       ;;deft              ; notational velocity for Emacs
+       doom              ; what makes DOOM look the way it does
+       doom-dashboard    ; a nifty splash screen for Emacs
+       doom-quit         ; DOOM quit-message prompts when you quit Emacs
+       ;;fill-column       ; a `fill-column' indicator
+       hl-todo           ; highlight TODO/FIXME/NOTE/DEPRECATED/HACK/REVIEW
+       ;;hydra
+       ;;indent-guides     ; highlighted indent columns
+       ;;ligatures         ; ligatures and symbols to make your code pretty again
+       ;;minimap           ; show a map of the code on the side
+       modeline          ; snazzy, Atom-inspired modeline, plus API
+       ;;nav-flash         ; blink cursor line after big motions
+       ;;neotree           ; a project drawer, like NERDTree for vim
+       ophints           ; highlight the region an operation acts on
+       (popup +defaults)   ; tame sudden yet inevitable temporary windows
+       ;;tabs              ; a tab bar for Emacs
+       treemacs          ; a project drawer, like neotree but cooler
+       ;;unicode           ; extended unicode support for various languages
+       vc-gutter         ; vcs diff in the fringe
+       vi-tilde-fringe   ; fringe tildes to mark beyond EOB
+       ;;window-select     ; visually switch windows
+       workspaces        ; tab emulation, persistence & separate workspaces
+       ;;zen               ; distraction-free coding or writing
+
+       :editor
+       (evil +everywhere); come to the dark side, we have cookies
+       file-templates    ; auto-snippets for empty files
+       fold              ; (nigh) universal code folding
+       ;;(format +onsave)  ; automated prettiness
+       ;;god               ; run Emacs commands without modifier keys
+       ;;lispy             ; vim for lisp, for people who don't like vim
+       multiple-cursors  ; editing in many places at once
+       ;;objed             ; text object editing for the innocent
+       ;;parinfer          ; turn lisp into python, sort of
+       ;;rotate-text       ; cycle region at point between text candidates
+       snippets          ; my elves. They type so I don't have to
+       ;;word-wrap         ; soft wrapping with language-aware indent
+
+       :emacs
+       (dired +ranger)             ; making dired pretty [functional]
+       electric          ; smarter, keyword-based electric-indent
+       ;;ibuffer         ; interactive buffer management
+       undo              ; persistent, smarter undo for your inevitable mistakes
+       vc                ; version-control and Emacs, sitting in a tree
+
+       :term
+       ;; eshell            ; the elisp shell that works everywhere
+       ;;shell             ; simple shell REPL for Emacs
+       ;;term              ; basic terminal emulator for Emacs
+       vterm             ; the best terminal emulation in Emacs
+
+       :checkers
+       syntax              ; tasing you for every semicolon you forget
+       ;;spell             ; tasing you for misspelling mispelling
+       ;;grammar           ; tasing grammar mistake every you make
+
+       :tools
+       ;;ansible
+       debugger          ; FIXME stepping through code, to help you add bugs
+       ;;direnv
+       ;;docker
+       ;;editorconfig      ; let someone else argue about tabs vs spaces
+       ;;ein               ; tame Jupyter notebooks with emacs
+       (eval +overlay)     ; run code, run (also, repls)
+       ;;gist              ; interacting with github gists
+       lookup              ; navigate your code and its documentation
+       lsp
+       magit             ; a git porcelain for Emacs
+       ;; make              ; run make tasks from Emacs
+       ;;pass              ; password manager for nerds
+       pdf               ; pdf enhancements
+       ;;prodigy           ; FIXME managing external services & code builders
+       ;;rgb               ; creating color strings
+       ;;taskrunner        ; taskrunner for all your projects
+       ;;terraform         ; infrastructure as code
+       ;;tmux              ; an API for interacting with tmux
+       ;;upload            ; map local to remote projects via ssh/ftp
+
+       :os
+       (:if IS-MAC macos)  ; improve compatibility with macOS
+       ;;tty               ; improve the terminal Emacs experience
+
+       :lang
+       ;;agda              ; types of types of types of types...
+       ;;cc                ; C/C++/Obj-C madness
+       ;;clojure           ; java with a lisp
+       ;;common-lisp       ; if you've seen one lisp, you've seen them all
+       ;;coq               ; proofs-as-programs
+       ;;crystal           ; ruby at the speed of c
+       ;;csharp            ; unity, .NET, and mono shenanigans
+       ;;data              ; config/data formats
+       ;;(dart +flutter)   ; paint ui and not much else
+       ;;elixir            ; erlang done right
+       ;;elm               ; care for a cup of TEA?
+       emacs-lisp        ; drown in parentheses
+       ;;erlang            ; an elegant language for a more civilized age
+       ;;ess               ; emacs speaks statistics
+       ;;faust             ; dsp, but you get to keep your soul
+       ;;fsharp            ; ML stands for Microsoft's Language
+       ;;fstar             ; (dependent) types and (monadic) effects and Z3
+       ;;gdscript          ; the language you waited for
+       ;;(go +lsp)         ; the hipster dialect
+       ;;(haskell +dante)  ; a language that's lazier than I am
+       ;;hy                ; readability of scheme w/ speed of python
+       ;;idris             ;
+       json              ; At least it ain't XML
+       ;;(java +meghanada) ; the poster child for carpal tunnel syndrome
+       (javascript +lsp)        ; all(hope(abandon(ye(who(enter(here))))))
+       ;;julia             ; a better, faster MATLAB
+       ;;kotlin            ; a better, slicker Java(Script)
+       latex             ; writing papers in Emacs has never been so fun
+       ;;lean
+       ;;factor
+       ;;ledger            ; an accounting system in Emacs
+       ;;lua               ; one-based indices? one-based indices
+       markdown          ; writing docs for people to ignore
+       ;;nim               ; python + lisp at the speed of c
+       ;;nix               ; I hereby declare "nix geht mehr!"
+       ;;ocaml             ; an objective camel
+       org               ; organize your plain life in plain text
+       ;;php               ; perl's insecure younger brother
+       ;;plantuml          ; diagrams for confusing people more
+       ;;purescript        ; javascript, but functional
+       ( python +lsp +pyright) ; beautiful is better than ugly
+       ;;qt                ; the 'cutest' gui framework ever
+       ;;racket            ; a DSL for DSLs
+       ;;raku              ; the artist formerly known as perl6
+       ;;rest              ; Emacs as a REST client
+       ;;rst               ; ReST in peace
+       ;;(ruby +rails)     ; 1.step {|i| p "Ruby is #{i.even? ? 'love' : 'life'}"}
+       ;;rust              ; Fe2O3.unwrap().unwrap().unwrap().unwrap()
+       ;;scala             ; java, but good
+       ;;scheme            ; a fully conniving family of lisps
+       sh                ; she sells {ba,z,fi}sh shells on the C xor
+       ;;sml
+       ;;solidity          ; do you need a blockchain? No.
+       ;;swift             ; who asked for emoji variables?
+       ;;terra             ; Earth and Moon in alignment for performance.
+       ( web +lsp)               ; the tubes
+       ;;yaml              ; JSON, but readable
+
+       :email
+       ;;(mu4e +gmail)
+       ;;notmuch
+       ;;(wanderlust +gmail)
+
+       :app
+       ;;calendar
+       ;;irc               ; how neckbeards socialize
+       ;;(rss +org)        ; emacs as an RSS reader
+       ;;twitter           ; twitter client https://twitter.com/vnought
+
+       :config
+       literate
+       (default +bindings +smartparens))
+#+END_SRC
+
+* config.el
+Aquí es donde metes toda tu configuración personal y las customizaciones de customize
+
+#+BEGIN_SRC elisp
+;; Place your private configuration here! Remember, you do not need to run 'doom
+;; sync' after modifying this file!
+
+
+;; Some functionality uses this to identify you, e.g. GPG configuration, email
+;; clients, file templates and snippets.
+(setq user-full-name "Marcos Galletero Romero"
+      user-mail-address "marcos_garo95@hotmail.com")
+
+;; Doom exposes five (optional) variables for controlling fonts in Doom. Here
+;; are the three important ones:
+;;
+;; + `doom-font'
+;; + `doom-variable-pitch-font'
+;; + `doom-big-font' -- used for `doom-big-font-mode'; use this for
+;;   presentations or streaming.
+;;
+;; They all accept either a font-spec, font string ("Input Mono-12"), or xlfd
+;; font string. You generally only need these two:
+;; (setq doom-font (font-spec :family "monospace" :size 12 :weight 'semi-light)
+;;       doom-variable-pitch-font (font-spec :family "sans" :size 13))
+
+;; There are two ways to load a theme. Both assume the theme is installed and
+;; available. You can either set `doom-theme' or manually load a theme with the
+;; `load-theme' function. This is the default:
+(setq doom-theme 'doom-material)
+
+(setq doom-font (font-spec :family "Source Code Pro" :size 14)
+      doom-variable-pitch-font (font-spec :family "Ubuntu" :size 14)
+      doom-big-font (font-spec :family "Source Code Pro" :size 24))
+(custom-set-faces!
+  '(font-lock-comment-face :slant italic)
+  '(font-lock-keyword-face :slant italic))
+
+;; (after! perspective
+;;   :custom
+;;   (setq persp-state-default-file '/home/marcos/.doom.d/.persp.state')
+;;   :init
+;;   (add-hook 'kill-emacs-hook #'persp-state-save)
+;;   )
+
+(use-package! poke-line
+  :ensure t
+  :config
+  (poke-line-global-mode 1))
+  :init
+  (add-hook 'find-file-hook #'poke-line-set-random-pokemon)
+
+(after! dired
+  (ranger-override-dired-mode t))
+;; ORG CONFIGURATION
+;; If you use `org' and don't want your org files in the default location below,
+;; change `org-directory'. It must be set before org loads!
+(use-package! org
+  :defer t
+  :custom
+  (org-directory "~/Dropbox/org")
+  ;; Python executable for source blocks
+  (org-default-notes-file (concat org-directory "/Notas.org"))
+  (org-capture-todo-file (concat org-directory "/General-TODO.org"))
+  (org-capture-journal-file (concat org-directory "/Diario.org"))
+  )
+
+(after! org
+  (require 'org-bullets)
+  (add-hook 'org-mode-hook (lambda () (org-bullets-mode 1)))
+  ;; Esta es la configuración del que hizo el paquete de org-recur
+  ;; Refresh org-agenda after rescheduling a task.
+  (defun org-agenda-refresh ()
+    "Refresh all `org-agenda' buffers."
+    (dolist (buffer (buffer-list))
+      (with-current-buffer buffer
+        (when (derived-mode-p 'org-agenda-mode)
+          (org-agenda-maybe-redo)))))
+
+  (defadvice org-schedule (after refresh-agenda activate)
+    "Refresh org-agenda."
+    (org-agenda-refresh))
+  ;; Log time a task was set to Done.
+  (setq org-log-done (quote time))
+
+  ;; Don't log the time a task was rescheduled or redeadlined.
+  (setq org-log-redeadline nil)
+  (setq org-log-reschedule nil)
+  ;; Hide italics marker
+  org-hide-emphasis-markers t
+
+  (setq org-read-date-prefer-future 'time)
+  ;;
+  (setq org-extend-today-until 4)
+  (setq org-modules '(ol-bibtex org-habit))
+  (setq org-log-into-drawer t)
+  (setq org-babel-python-command "python3")
+  (setq org-habit-graph-column 67)
+  (setq org-capture-templates '(("d" "Diario personal" entry
+                                                                                     (file+olp+datetree org-capture-journal-file "Diario")
+                                                                                     "* 3 cosas que he disfrutado hoy
+%i%?
+\* Estado de ánimo con el que me acuesto ( :smile: | :neutral-face: | :slight_frown: ) y razón por la que ha cambiado con respecto a ayer
+%i
+\* 3 cosas que podría haber hecho de manera diferente hoy para que el día hubiera sido mejor
+%i
+\* 3 cosas por las que me siento agradecido en la vida
+%i
+\* 3 propósitos que quiero cumplir el día de mañana
+" :prepend t)
+                                                                                    ("t" "Personal todo" entry
+                                                                                     (file+headline +org-capture-todo-file "Inbox")
+                                                                                     "* [ ] %?
+%i
+%a" :prepend t)
+                                                                                    ("n" "Personal notes" entry
+                                                                                     (file+headline +org-capture-notes-file "Inbox")
+                                                                                     "* %u %?
+%i
+%a" :prepend t)
+                                                                                    ("j" "Journal" entry
+                                                                                     (file+olp+datetree +org-capture-journal-file)
+                                                                                     "* %U %?
+%i
+%a" :prepend t)
+                                                                                    ("p" "Templates for projects")
+                                                                                    ("pt" "Project-local todo" entry
+                                                                                     (file+headline +org-capture-project-todo-file "Inbox")
+                                                                                     "* TODO %?
+%i
+%a" :prepend t)
+                                                                                    ("pn" "Project-local notes" entry
+                                                                                     (file+headline +org-capture-project-notes-file "Inbox")
+                                                                                     "* %U %?
+%i
+%a" :prepend t)
+                                                                                    ("pc" "Project-local changelog" entry
+                                                                                     (file+headline +org-capture-project-changelog-file "Unreleased")
+                                                                                     "* %U %?
+%i
+%a" :prepend t)
+                                                                                    ("o" "Centralized templates for projects")
+                                                                                    ("ot" "Project todo" entry
+                                                                                     (function +org-capture-central-project-todo-file)
+                                                                                     "* TODO %?
+ %i
+ %a" :heading "Tasks" :prepend nil)
+                                                                                    ("on" "Project notes" entry
+                                                                                     (function +org-capture-central-project-notes-file)
+                                                                                     "* %U %?
+ %i
+ %a" :prepend t :heading "Notes")
+                                                                                    ("oc" "Project changelog" entry
+                                                                                     (function +org-capture-central-project-changelog-file)
+                                                                                     "* %U %?
+ %i
+ %a" :prepend t :heading "Changelog"))))
+
+;; Activa el emojify globalmente
+(use-package! emojify
+  :defer nil
+  :custom
+  (emojify-emoji-styles '(github))
+  :config
+  (global-emojify-mode))
+;; Activamos el org-recur para mejorar la planificación de las tareas
+(use-package! org-recur
+  :hook ((org-mode . org-recur-mode)
+         (org-agenda-mode . org-recur-agenda-mode))
+  :config
+
+  (setq org-recur-finish-done t
+        org-recur-finish-archive t))
+;; This determines the style of line numbers in effect. If set to `nil', line
+;; numbers are disabled. For relative line numbers, set this to `relative'.
+(setq display-line-numbers-type t)
+
+(use-package! cus-edit
+  :defer t
+  :custom
+  (custom-unlispify-menu-entries nil)
+  (custom-unlispify-tag-names nil)
+  (custom-unlispify-remove-prefixes nil))
+;; Here are some additional functions/macros that could help you configure Doom:
+
+;; - `load!' for loading external *.el files relative to this one
+;; - `use-package!' for configuring packages
+;; - `after!' for running code after a package has loaded
+;; - `add-load-path!' for adding directories to the `load-path', relative to
+;;   this file. Emacs searches the `load-path' when you load packages with
+;;   `require' or `use-package'.
+;; - `map!' for binding new keys
+;;
+;; To get information about any of these functions/macros, move the cursor over
+;; the highlighted symbol at press 'K' (non-evil users must press 'C-c c k').
+;; This will open documentation for it, including demos of how they are used.
+;;
+;; You can also try 'gd' (or 'C-c c d') to jump to their definition and see how
+;; they are implemented.
+(general-auto-unbind-keys)
+
+;; ace más accesible desde keybindings
+(map! :map global-map
+      :n "C-w w" #'ace-select-window
+      :desc "ace-select-window")
+(map! :map org-recur-mode-map
+      :n "C-c d" #'org-recur-finish
+      :desc "org-recur-finish")
+(map! :map org-recur-agenda-mode-map
+      :m "C-c d" #'org-recur-finish
+      :desc "org-recur-finish")
+#+END_SRC
+
+* packages.el
+To install a package with Doom you must declare them here and run 'doom sync'
+on the command line, then restart Emacs for the changes to take effect -- or
+use 'M-x doom/reload'.
+
+
+To install SOME-PACKAGE from MELPA, ELPA or emacsmirror:
+(package! some-package)
+
+To install a package directly from a remote git repo, you must specify a
+`:recipe'. You'll find documentation on what `:recipe' accepts here:
+https://github.com/raxod502/straight.el#the-recipe-format
+(package! another-package
+  :recipe (:host github :repo "username/repo"))
+
+If the package you are trying to install does not contain a PACKAGENAME.el
+file, or is located in a subdirectory of the repo, you'll need to specify
+`:files' in the `:recipe':
+(package! this-package
+  :recipe (:host github :repo "username/repo"
+           :files ("some-file.el" "src/lisp/*.el")))
+
+If you'd like to disable a package included with Doom, you can do so here
+with the `:disable' property:
+(package! builtin-package :disable t)
+
+You can override the recipe of a built in package without having to specify
+all the properties for `:recipe'. These will inherit the rest of its recipe
+from Doom or MELPA/ELPA/Emacsmirror:
+(package! builtin-package :recipe (:nonrecursive t))
+(package! builtin-package-2 :recipe (:repo "myfork/package"))
+
+Specify a `:branch' to install a package from a particular branch or tag.
+This is required for some packages whose default branch isn't 'master' (which
+our package manager can't deal with; see raxod502/straight.el#279)
+(package! builtin-package :recipe (:branch "develop"))
+
+Use `:pin' to specify a particular commit to install.
+(package! builtin-package :pin "1a2b3c4d5e")
+
+
+Doom's packages are pinned to a specific commit and updated from release to
+release. The `unpin!' eacro allows you to unpin single packages...
+(unpin! pinned-package)
+...or multiple packages
+(unpin! pinned-package another-pinned-package)
+...Or *all* packages (NOT RECOMMENDED; will likely break things)
+(unpin! t)
+#+BEGIN_SRC elisp :tangle packages.el
+;; -*- no-byte-compile: t; -*-
+;;; $DOOMDIR/packages.el
+
+;; (package! org-super-agenda)
+(package! emojify)
+(package! org-recur)
+(package! org-bullets)
+(package! poke-line)
+#+END_SRC
