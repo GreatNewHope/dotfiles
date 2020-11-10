@@ -32,15 +32,7 @@
   '(font-lock-comment-face :slant italic)
   '(font-lock-keyword-face :slant italic))
 
-;; (after! perspective
-;;   :custom
-;;   (setq persp-state-default-file '/home/marcos/.doom.d/.persp.state')
-;;   :init
-;;   (add-hook 'kill-emacs-hook #'persp-state-save)
-;;   )
-
 (use-package! poke-line
-  :ensure t
   :config
   (poke-line-global-mode 1))
   :init
@@ -54,12 +46,77 @@
 (use-package! org
   :defer t
   :custom
-  (org-directory "~/Dropbox/org")
-  ;; Python executable for source blocks
-  (org-default-notes-file (concat org-directory "/Notas.org"))
-  (org-capture-todo-file (concat org-directory "/General-TODO.org"))
-  (org-capture-journal-file (concat org-directory "/Diario.org"))
-  )
+  ( org-directory "~/Dropbox/org")
+  ( org-capture-diario-file (concat org-directory "/Diario.org") )
+  ( org-agenda-skip-scheduled-if-done t )
+  ( org-agenda-skip-deadline-if-done t ) ( org-agenda-include-deadlines t )
+  ( org-agenda-block-separator nil )
+  ( org-agenda-tags-column 100 )
+  ( org-agenda-compact-blocks t )
+  ( org-tag-persistent-alist  )
+  ( org-agenda-custom-commands
+    '(("o" "Overview" (
+       (alltodo "" ((org-agenda-overriding-header "")
+                    (org-super-agenda-groups
+                     '((:name "Vencido"
+                       :and
+                       (:scheduled past :not (:habit t) )
+                       :deadline past)
+                       (:discard (:anything))
+                       ))))
+       (agenda "" ((org-agenda-span 2)
+                   (org-agenda-start-day (format-time-string "%d"))
+                   (org-extend-today-until 4)
+                   (org-super-agenda-groups
+                     '((:name ""
+                        :and
+                        ( :time-grid t :not (:scheduled past) :not (:deadline past) :not (:habit t))
+                        :and
+                        ( :date today :not (:habit t))
+                        :and
+                        ( :scheduled today :not (:habit t))
+                        :and
+                        ( :deadline today :not (:habit t)))
+                       (:discard (:anything))
+                       ))
+                    ))
+       (alltodo "" ((org-agenda-overriding-header "")
+                    (org-super-agenda-groups
+                     '((:name "mrH"
+                        :and
+                        (:file-path "projects.org" :tag ("mrh_dashboard" "i3_rest_server")))
+                       (:discard (:anything))
+                       ))))
+       (alltodo "" ((org-agenda-overriding-header "")
+                    (org-super-agenda-groups
+                     '((:name "Máster"
+                        :and
+                        (:file-path "projects.org" :tag ()))
+                       (:discard (:anything))
+                       ))))
+       (agenda "" ((org-super-agenda-groups
+                     '((:name "Hábitos"
+                        :and
+                        ( :time-grid t :habit t )
+                        :and
+                        ( :date today :habit t )
+                        :and
+                        ( :scheduled today :habit t ))
+                       (:discard (:not (:habit t)))
+                       ))
+                    ))
+       ))
+      ))
+ )
+
+(use-package! org-super-agenda
+  :hook
+  '(org-agenda-mode . org-super-agenda-mode))
+
+(use-package! treemacs
+  :defer t
+  :config
+  (treemacs-follow-mode))
 
 (after! org
   (require 'org-bullets)
@@ -87,13 +144,13 @@
 
   (setq org-read-date-prefer-future 'time)
   ;;
-  (setq org-extend-today-until 4)
+  ;; (setq org-extend-today-until 4)
   (setq org-modules '(ol-bibtex org-habit))
   (setq org-log-into-drawer t)
   (setq org-babel-python-command "python3")
   (setq org-habit-graph-column 67)
   (setq org-capture-templates '(("d" "Diario personal" entry
-                                                                                     (file+olp+datetree org-capture-journal-file "Diario")
+                                                                                     (file+olp+datetree org-capture-diario-file "Diario")
                                                                                      "* 3 cosas que he disfrutado hoy
 %i%?
 \* Estado de ánimo con el que me acuesto ( :smile: | :neutral-face: | :slight_frown: ) y razón por la que ha cambiado con respecto a ayer
@@ -138,17 +195,17 @@
                                                                                     ("o" "Centralized templates for projects")
                                                                                     ("ot" "Project todo" entry
                                                                                      (function +org-capture-central-project-todo-file)
-                                                                                     "* TODO %?
+                                                                                     "* TODO %? :%( projectile-project-name )
  %i
  %a" :heading "Tasks" :prepend nil)
                                                                                     ("on" "Project notes" entry
                                                                                      (function +org-capture-central-project-notes-file)
-                                                                                     "* %U %?
+                                                                                     "* %U %? :%( projectile-project-name )
  %i
  %a" :prepend t :heading "Notes")
                                                                                     ("oc" "Project changelog" entry
                                                                                      (function +org-capture-central-project-changelog-file)
-                                                                                     "* %U %?
+                                                                                     "* %U %? :%( projectile-project-name )
  %i
  %a" :prepend t :heading "Changelog"))))
 
@@ -195,13 +252,24 @@
 ;; they are implemented.
 (general-auto-unbind-keys)
 
+(defun eide-smart-tab-jump-out-or-indent (&optional arg)
+  "Smart tab behavior. Jump out quote or brackets, or indent."
+  (interactive "P")
+  (if (-contains? (list "\"" "'" ")" "}" ";" "|" ">" "]" ) (make-string 1 (char-after)))
+      (forward-char 1)
+    (indent-for-tab-command arg)))
+
+(global-set-key [remap indent-for-tab-command]
+                'eide-smart-tab-jump-out-or-indent)
 ;; ace más accesible desde keybindings
 (map! :map global-map
-      :n "C-w w" #'ace-select-window
-      :desc "ace-select-window")
+      :n "C-w w" #'ace-window
+      :desc "Select any window")
 (map! :map org-recur-mode-map
       :n "C-c d" #'org-recur-finish
-      :desc "org-recur-finish")
+      :desc "Function to use instead of org-todo for org-recur tasks")
 (map! :map org-recur-agenda-mode-map
       :m "C-c d" #'org-recur-finish
-      :desc "org-recur-finish")
+      :desc "Function to use instead of org-todo for org-recur tasks")
+
+(setq fancy-splash-image (expand-file-name "misc/splash-images/logo-verde.svg" doom-private-dir))
