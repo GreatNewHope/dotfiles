@@ -58,7 +58,7 @@
     '(("o" "Overview" (
        (alltodo "" ((org-agenda-overriding-header "")
                     (org-super-agenda-groups
-                     '((:name "Vencido"
+                     '((:name ""
                        :and
                        (:scheduled past :not (:habit t) )
                        :deadline past)
@@ -68,15 +68,18 @@
                    (org-agenda-start-day (format-time-string "%d"))
                    (org-extend-today-until 4)
                    (org-super-agenda-groups
-                     '((:name ""
+                     '((:name "Hoy"
                         :and
                         ( :time-grid t :not (:scheduled past) :not (:deadline past) :not (:habit t))
                         :and
-                        ( :date today :not (:habit t))
-                        :and
                         ( :scheduled today :not (:habit t))
                         :and
-                        ( :deadline today :not (:habit t)))
+                        ( :scheduled future :not (:habit t))
+                        :and
+                        ( :deadline today :not (:habit t))
+                        :and
+                        ( :deadline future :not (:habit t))
+                        )
                        (:discard (:anything))
                        ))
                     ))
@@ -94,17 +97,22 @@
                         (:file-path "projects.org" :tag ()))
                        (:discard (:anything))
                        ))))
-       (agenda "" ((org-super-agenda-groups
-                     '((:name "Hábitos"
-                        :and
-                        ( :time-grid t :habit t )
-                        :and
-                        ( :date today :habit t )
-                        :and
-                        ( :scheduled today :habit t ))
+       (agenda "" ((org-agenda-span 1)
+                   (org-agenda-start-day (format-time-string "%d"))
+                   (org-super-agenda-groups
+                     '(
+                       (:name "Hábitos"
+                        :habit t)
                        (:discard (:not (:habit t)))
                        ))
                     ))
+       ;; (alltodo "" ((org-agenda-overriding-header "")
+       ;;              (org-super-agenda-groups
+       ;;               '((:name "Objetivos Personales"
+       ;;                  :and
+       ;;                  (:file-path "projects.org" :tag ("mrh_dashboard" "i3_rest_server")))
+       ;;                 (:discard (:anything))
+       ;;                 ))))
        ))
       ))
  )
