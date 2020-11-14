@@ -417,17 +417,17 @@ Aquí es donde metes toda tu configuración personal y las customizaciones de cu
                                                                                     ("o" "Centralized templates for projects")
                                                                                     ("ot" "Project todo" entry
                                                                                      (function +org-capture-central-project-todo-file)
-                                                                                     "* TODO %? :%( projectile-project-name )
+                                                                                     "* TODO %? :%( projectile-project-name ):
  %i
  %a" :heading "Tasks" :prepend nil)
                                                                                     ("on" "Project notes" entry
                                                                                      (function +org-capture-central-project-notes-file)
-                                                                                     "* %U %? :%( projectile-project-name )
+                                                                                     "* %U %? :%( projectile-project-name ):
  %i
  %a" :prepend t :heading "Notes")
                                                                                     ("oc" "Project changelog" entry
                                                                                      (function +org-capture-central-project-changelog-file)
-                                                                                     "* %U %? :%( projectile-project-name )
+                                                                                     "* %U %? :%( projectile-project-name ):
  %i
  %a" :prepend t :heading "Changelog"))))
 
