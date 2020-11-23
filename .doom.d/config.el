@@ -68,7 +68,7 @@
                    (org-agenda-start-day (format-time-string "%d"))
                    (org-extend-today-until 4)
                    (org-super-agenda-groups
-                     '((:name "Hoy"
+                     '((:name ""
                         :and
                         ( :time-grid t :not (:scheduled past) :not (:deadline past) :not (:habit t))
                         :and
@@ -85,14 +85,14 @@
                     ))
        (alltodo "" ((org-agenda-overriding-header "")
                     (org-super-agenda-groups
-                     '((:name "mrH"
+                     '((:name ""
                         :and
-                        (:file-path "projects.org" :tag ("mrh_dashboard" "i3_rest_server")))
+                        (:file-path "projects.org" :tag ("mrh_dashboard" "i3_rest_server" "mrh_FINDR")))
                        (:discard (:anything))
                        ))))
        (alltodo "" ((org-agenda-overriding-header "")
                     (org-super-agenda-groups
-                     '((:name "Máster"
+                     '((:name ""
                         :and
                         (:file-path "projects.org" :tag ()))
                        (:discard (:anything))
@@ -101,7 +101,7 @@
                    (org-agenda-start-day (format-time-string "%d"))
                    (org-super-agenda-groups
                      '(
-                       (:name "Hábitos"
+                       (:name ""
                         :habit t)
                        (:discard (:not (:habit t)))
                        ))
@@ -118,8 +118,10 @@
  )
 
 (use-package! org-super-agenda
+  :defer t
   :hook
-  '(org-agenda-mode . org-super-agenda-mode))
+  '(org-agenda-mode . org-super-agenda-mode )
+  )
 
 (use-package! treemacs
   :defer t
@@ -203,17 +205,17 @@
                                                                                     ("o" "Centralized templates for projects")
                                                                                     ("ot" "Project todo" entry
                                                                                      (function +org-capture-central-project-todo-file)
-                                                                                     "* TODO %? :%( projectile-project-name )
+                                                                                     "* TODO %? :%( projectile-project-name ):
  %i
  %a" :heading "Tasks" :prepend nil)
                                                                                     ("on" "Project notes" entry
                                                                                      (function +org-capture-central-project-notes-file)
-                                                                                     "* %U %? :%( projectile-project-name )
+                                                                                     "* %U %? :%( projectile-project-name ):
  %i
  %a" :prepend t :heading "Notes")
                                                                                     ("oc" "Project changelog" entry
                                                                                      (function +org-capture-central-project-changelog-file)
-                                                                                     "* %U %? :%( projectile-project-name )
+                                                                                     "* %U %? :%( projectile-project-name ):
  %i
  %a" :prepend t :heading "Changelog"))))
 
